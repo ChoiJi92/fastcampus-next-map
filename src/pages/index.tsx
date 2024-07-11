@@ -1,34 +1,29 @@
-import Layout from '@/components/Layout'
-import Image from 'next/image'
-import Link from 'next/link'
+import Map from '@/components/Map'
+import Markers from '@/components/Markers'
+import StoreBox from '@/components/StoreBox'
 
-export default function Home() {
+import { StoreType } from '@/interface'
+import axios from 'axios'
+import { useState } from 'react'
+
+export default function Home({ stores }: { stores: StoreType[] }) {
+  const [map, setMap] = useState(null)
+  const [currentStore, setCurrentStore] = useState(null)
+
   return (
-    <Layout>
-      <h1>Map Index Page</h1>
-      <ul>
-        <li>
-          <Link href="/stores">맛집 목록</Link>
-        </li>
-        <li>
-          <Link href="/stores/new">맛집 생성</Link>
-        </li>
-        <li>
-          <Link href="/stores/1">맛집 상세</Link>
-        </li>
-        <li>
-          <Link href="/stores/1/edit">맛집 수정</Link>
-        </li>
-        <li>
-          <Link href="/users/login">로그인 페이지</Link>
-        </li>
-        <li>
-          <Link href="/users/mypage">마이페이지</Link>
-        </li>
-        <li>
-          <Link href="/users/likes">찜한 맛집</Link>
-        </li>
-      </ul>
-    </Layout>
+    <>
+      <Map setMap={setMap} />
+      <Markers map={map} stores={stores} setCurrentStore={setCurrentStore} />
+      <StoreBox store={currentStore} setStore={setCurrentStore} />
+    </>
   )
+}
+
+export async function getStaticProps() {
+  const stores = await axios(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`)
+
+  return {
+    props: { stores: stores.data },
+    revalidate: 60 * 60,
+  }
 }
