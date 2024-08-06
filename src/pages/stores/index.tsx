@@ -1,27 +1,34 @@
+import { searchState } from '@/atom'
 import Loader from '@/components/Loader'
 import Loading from '@/components/Loading'
-import Pagination from '@/components/Pagination'
+import SearchFilter from '@/components/SearchFilter'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
-import { StoreApiResponse, StoreType } from '@/interface'
+import { StoreType } from '@/interface'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Fragment, useCallback, useEffect, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { useRecoilValue } from 'recoil'
 
 export default function StoreListPage() {
   const router = useRouter()
-  const { page = '1' }: any = router.query
   const ref = useRef<HTMLDivElement>(null)
   const pageRef = useIntersectionObserver(ref, {})
   const isPageEnd = !!pageRef?.isIntersecting
+  const searchValue = useRecoilValue(searchState)
+
+  const searchParams = {
+    q: searchValue?.q,
+    district: searchValue?.district,
+  }
 
   const fetchStores = async ({ pageParam = 1 }: any) => {
     const { data } = await axios(`/api/stores?page=${pageParam}`, {
       params: {
         limit: 10,
         page: pageParam,
+        ...searchParams,
       },
     })
     return data
@@ -36,7 +43,7 @@ export default function StoreListPage() {
     isError,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['stores'],
+    queryKey: ['stores', searchParams],
     queryFn: fetchStores,
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => {
@@ -67,6 +74,8 @@ export default function StoreListPage() {
 
   return (
     <div className='px-4 md:max-w-4xl mx-auto py-8'>
+      {/* search filter */}
+      <SearchFilter />
       <ul role='list' className='divide-y divide-gray-100'>
         {isLoading ? (
           <Loading />
@@ -74,7 +83,11 @@ export default function StoreListPage() {
           stores?.pages?.map((page, index) => (
             <Fragment key={index}>
               {page.data.map((store: StoreType, i: number) => (
-                <li className='flex justify-between gap-x-6 py-5' key={i}>
+                <li
+                  className='flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-gray-50'
+                  key={i}
+                  onClick={() => router.push(`/stores/${store.id}`)}
+                >
                   <div className='flex gap-x-4'>
                     <Image
                       src={store?.category ? `/images/markers/${store?.category}.png` : '/images/markers/default.png'}

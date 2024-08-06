@@ -1,14 +1,14 @@
+import { currentStoreState } from '@/atom'
 import { StoreType } from '@/interface'
 import Image from 'next/image'
-import { Dispatch, SetStateAction } from 'react'
+import { useRouter } from 'next/navigation'
 import { AiOutlineClose, AiOutlineInfoCircle, AiOutlineCheck, AiOutlinePhone } from 'react-icons/ai'
 import { HiOutlineMapPin } from 'react-icons/hi2'
-interface StoreBoxProps {
-  store: StoreType | null
-  setStore: Dispatch<SetStateAction<any>>
-}
+import { useRecoilState } from 'recoil'
 
-export default function StoreBox({ store, setStore }: StoreBoxProps) {
+export default function StoreBox() {
+  const router = useRouter()
+  const [store, setStore] = useRecoilState(currentStoreState)
   return (
     <div className='fixed transition ease-out delay-150 inset-x-0 mx-auto bottom-20 rounded-lg shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white'>
       {store && (
@@ -50,7 +50,7 @@ export default function StoreBox({ store, setStore }: StoreBoxProps) {
           </div>
           <button
             type='button'
-            onClick={() => window.alert('상세보기 작업 중')}
+            onClick={() => router.push(`/stores/${store?.id}`)}
             className='w-full bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 py-3 text-white font-semibold rounded-b-lg'
           >
             상세보기
