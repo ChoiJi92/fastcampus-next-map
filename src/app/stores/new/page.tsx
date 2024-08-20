@@ -1,3 +1,5 @@
+'use client'
+
 import AddressSearch from '@/components/AddressSearch'
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store'
 import { StoreType } from '@/interface'

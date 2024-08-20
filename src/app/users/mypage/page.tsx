@@ -1,14 +1,14 @@
+'use client'
+
 import CommentList from '@/components/comments/CommentList'
 import Pagination from '@/components/Pagination'
 import { CommentApiResponse } from '@/interface'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 
-export default function MyPage() {
-  const router = useRouter()
-  const { page = '1' }: any = router.query
+export default function MyPage({ params }: { params: { page: string } }) {
+  const page = params?.page || '1'
 
   const fetchComments = async () => {
     const { data } = await axios(`/api/comments?&limit=5&page=${page}&user=true`)

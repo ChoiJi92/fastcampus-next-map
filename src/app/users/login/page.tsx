@@ -1,3 +1,5 @@
+'use client'
+
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { SiNaver } from 'react-icons/si'
 import { RiKakaoTalkFill } from 'react-icons/ri'

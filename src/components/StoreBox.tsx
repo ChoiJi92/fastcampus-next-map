@@ -1,5 +1,6 @@
+'use client'
+
 import { currentStoreState } from '@/atom'
-import { StoreType } from '@/interface'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { AiOutlineClose, AiOutlineInfoCircle, AiOutlineCheck, AiOutlinePhone } from 'react-icons/ai'

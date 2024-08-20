@@ -1,19 +1,18 @@
+'use client'
+
 import { searchState } from '@/atom'
 import Loader from '@/components/Loader'
 import Loading from '@/components/Loading'
 import SearchFilter from '@/components/SearchFilter'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
 import { StoreType } from '@/interface'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import StoreList from '@/components/StoreList'
 
 export default function StoreListPage() {
-  const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
   const pageRef = useIntersectionObserver(ref, {})
   const isPageEnd = !!pageRef?.isIntersecting
