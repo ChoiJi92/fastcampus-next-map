@@ -7,8 +7,8 @@ import { LikeApiResponse, LikeInterface } from '@/interface'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
-export default function LikesPage({ params }: { params: { page: string } }) {
-  const page = params?.page || '1'
+export default function LikesPage({ searchParams }: { searchParams: { page: string } }) {
+  const page = searchParams?.page || '1'
   const fetchLikes = async () => {
     const { data } = await axios(`/api/likes?limit=10&page=${page}`)
     return data as LikeApiResponse

@@ -7,8 +7,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { signOut, useSession } from 'next-auth/react'
 
-export default function MyPage({ params }: { params: { page: string } }) {
-  const page = params?.page || '1'
+export default function MyPage({ searchParams }: { searchParams: { page: string } }) {
+  const page = searchParams?.page || '1'
 
   const fetchComments = async () => {
     const { data } = await axios(`/api/comments?&limit=5&page=${page}&user=true`)
