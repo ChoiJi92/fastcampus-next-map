@@ -15,10 +15,9 @@ import Comments from '@/components/comments'
 
 interface ParamsProps {
   params: { id: string }
-  searchParams: { page: string }
 }
 
-export default function StorePage({ params, searchParams }: ParamsProps) {
+export default function StorePage({ params }: ParamsProps) {
   const router = useRouter()
   const id = params.id
   const { status } = useSession()
@@ -122,7 +121,7 @@ export default function StorePage({ params, searchParams }: ParamsProps) {
             <Map lat={store?.lat} lng={store?.lng} zoom={1} />
             <Marker store={store} />
           </div>
-          <Comments storeId={store.id} page={searchParams.page} />
+          <Comments storeId={store.id} />
         </>
       )}
     </>

@@ -6,12 +6,14 @@ import { CommentApiResponse } from '@/interface'
 import { useQuery } from '@tanstack/react-query'
 import CommentList from './CommentList'
 import Pagination from '../Pagination'
+import { useSearchParams } from 'next/navigation'
 
 interface CommentProps {
   storeId: number
-  page: string
 }
-export default function Comments({ storeId, page }: CommentProps) {
+export default function Comments({ storeId }: CommentProps) {
+  const searchParams = useSearchParams()
+  const page = searchParams?.get('page') || '1'
   const { status } = useSession()
 
   const fetchComments = async () => {
